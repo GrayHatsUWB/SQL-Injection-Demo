@@ -1,0 +1,24 @@
+{
+  "name": "backdoor-server",
+  "version": "1.0.0",
+  "description": "A simplistic example of what a backdoor program would look like.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/samuel-hunter/backdoor-demo.git"
+  },
+  "author": "Sam Hunter",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/samuel-hunter/backdoor-demo/issues"
+  },
+  "homepage": "https://gitlab.com/samuel-hunter/backdoor-demo#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pug": "^2.0.4",
+    "sqlite3": "^4.1.0"
+  }
+}
