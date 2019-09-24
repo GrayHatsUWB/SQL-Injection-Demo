@@ -67,6 +67,17 @@ app.get('/logout', function (req, res) {
   res.redirect('/')
 })
 
+app.get('/scores', function (req, res, next) {
+  model.getScore(function(err, scores) {
+    if (err) {
+      next(err)
+    } else {
+      res.setHeader('Content-Type', 'application/json')
+      res.send(JSON.stringify(scores))
+    }
+  })
+})
+
 app.use(express.static('static'))
 
 // DB Initialization

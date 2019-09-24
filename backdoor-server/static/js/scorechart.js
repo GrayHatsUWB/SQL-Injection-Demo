@@ -48,21 +48,6 @@ $(document).ready(function() {
     }
   ]
 
-  let latestData = [
-    {
-      team: 'Red',
-      score: 95
-    },
-    {
-      team: 'Blue',
-      score: 25
-    },
-    {
-      team: 'Green',
-      score: 90
-    }
-  ]
-
   function findTeam(name) {
     for (let team of teams) {
       if (team.name === name) return team
@@ -72,11 +57,15 @@ $(document).ready(function() {
     return null
   }
 
-  for (let data of latestData) {
-    findTeam(data.team).data.push(data.score)
-  }
-
-  var ctx = document.getElementById('score-chart').getContext('2d')
-  var chart = new Chart(ctx, createConfig(teams))
-
+  // Get the latest set of data
+  $.get('/scores')
+    .done(function(latestData) {
+      for (let data of latestData) {
+        findTeam(data.team).data.push(data.score)
+      }
+    })
+    .always(function () {
+      var ctx = document.getElementById('score-chart').getContext('2d')
+      var chart = new Chart(ctx, createConfig(teams))
+    })
 })
