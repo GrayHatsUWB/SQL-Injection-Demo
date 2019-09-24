@@ -2,16 +2,26 @@ const sqlite3 = require('sqlite3').verbose()
 const fs = require('fs')
 const dbPath = 'database.db'
 
-var dbExists = fs.existsSync(dbPath)
+var firstRun = !fs.existsSync(dbPath)
 var db = new sqlite3.Database(dbPath)
 
-// Create all the tables if loading the database for the first time.
-if (!dbExists) {
-  // Don't surround with try/catch; no way to handle this error.
-  var data = fs.readFileSync('tables.sql')
-  db.run(String(data))
+function runFileSync(db, filepath) {
+  return
+}
+
+function getScore(callback) {
+  db.all('SELECT team, score FROM score', function (err, rows) {
+    if (err) {
+      callback(err)
+      return
+    }
+
+    callback(null, rows)
+  })
 }
 
 module.exports = {
-  db: db
+  db: db,
+  firstRun: firstRun,
+  getScore: getScore
 }

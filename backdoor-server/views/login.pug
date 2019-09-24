@@ -1,0 +1,18 @@
+extends layout.pug
+
+block title
+  title Login - Spleef Sports
+
+block content
+  if failed
+    .alert.alert-danger(role="alert") Incorrect username or password.
+  h2 Login
+  form(action="/login" method="POST")
+    .form-group
+      label(for="username") Username
+      input#username.form-control(type="text" name="username" required)
+    .form-group
+      label(for="password") Password
+      input#password.form-control(type="password" name="password" required)
+    .form-group
+      button.btn.btn-primary(type="submit") Login

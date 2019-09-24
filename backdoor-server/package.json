@@ -17,7 +17,9 @@
   },
   "homepage": "https://gitlab.com/samuel-hunter/backdoor-demo#readme",
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "express": "^4.17.1",
+    "express-session": "^1.16.2",
     "pug": "^2.0.4",
     "sqlite3": "^4.1.0"
   }

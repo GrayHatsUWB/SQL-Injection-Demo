@@ -1,5 +1,0 @@
-CREATE TABLE account (
-  primkey INTEGER PRIMARY KEY,
-  username TEXT NOT NULL UNIQUE,
-  hash TEXT NOT NULL
-)
