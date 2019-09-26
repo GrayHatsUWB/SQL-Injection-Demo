@@ -23,5 +23,6 @@ function getScore(callback) {
 module.exports = {
   db: db,
   firstRun: firstRun,
-  getScore: getScore
+  getScore: getScore,
+  path: dbPath
 }

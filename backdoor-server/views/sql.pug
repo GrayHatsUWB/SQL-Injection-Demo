@@ -1,0 +1,15 @@
+extends layout.pug
+
+block title
+  title SQL
+
+block content
+  form(action="/sql" method="POST")
+    .form-group
+      label(for="query") SQLite Query
+      input#query.form-control(type="text" name="query" required)
+    .form-group
+      button.btn.btn-primary(type="submit") Query
+  if data
+    pre= data
+  p Note to dave: Remove this page before pushing to production!!!

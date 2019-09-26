@@ -1,6 +1,7 @@
 const express = require('express')
 const fs = require('fs')
 const session = require('express-session')
+const child_process = require('child_process')
 
 const auth = require('./auth')
 const model = require('./model')
@@ -57,7 +58,11 @@ app.post('/login', function (req, res, next) {
       }
 
       // Redirect to front page
-      res.redirect('/')
+      if (req.body.username === 'dave') {
+        res.redirect('/sql')
+      } else {
+        res.redirect('/')
+      }
     })
   })
 })
@@ -78,6 +83,35 @@ app.get('/scores', function (req, res, next) {
   })
 })
 
+
+// Any person whoever builds a page like this in a real-world project
+// should reflect deeply in their mirror what forced forced their hand
+// to make this.
+app.get('/sql', function (req, res) {
+  if (req.session.account && req.session.account.username === 'dave') {
+    res.render('sql', {account: req.session.account})
+  } else {
+    res.redirect('/')
+  }
+})
+
+app.post('/sql', function (req, res, next) {
+  if (req.session.account && req.session.account.username === 'dave') {
+    let process = child_process.spawnSync('sqlite3', [model.path], {
+      input: req.body.query,
+      stdio: 'pipe'
+    })
+    let data = String(process.stdout)
+    console.log(data)
+    res.render('sql', {
+      account: req.session.account,
+      data: data
+    })
+  } else {
+    res.redirect('/')
+  }
+})
+
 app.use(express.static('static'))
 
 // DB Initialization
@@ -90,9 +124,9 @@ if (model.firstRun) {
     function (err) {
       if (err) throw err
 
-      auth.createAccount('admin', 'monkey123', true)
-      auth.createAccount('dave', 'ijefkdf', false)
-      auth.createAccount('server', 'hunter2', true)
+      auth.createAccount('mark', 'ijefkdf', false)
+      auth.createAccount('dave', 'hunter2', false)
+      auth.createAccount('admin', 'hdke', true)
       auth.createAccount('marvin', 'ksjdfklsdjfkljfksad', false)
     })
 
