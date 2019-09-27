@@ -57,12 +57,7 @@ app.post('/login', function (req, res, next) {
         isAdmin: ok
       }
 
-      // Redirect to front page
-      if (req.body.username === 'dave') {
-        res.redirect('/sql')
-      } else {
-        res.redirect('/')
-      }
+      res.redirect('/')
     })
   })
 })
@@ -88,7 +83,7 @@ app.get('/scores', function (req, res, next) {
 // should reflect deeply in their mirror what forced forced their hand
 // to make this.
 app.get('/sql', function (req, res) {
-  if (req.session.account && req.session.account.username === 'dave') {
+  if (req.session.account && req.session.account.isAdmin) {
     res.render('sql', {account: req.session.account})
   } else {
     res.redirect('/')
@@ -96,13 +91,12 @@ app.get('/sql', function (req, res) {
 })
 
 app.post('/sql', function (req, res, next) {
-  if (req.session.account && req.session.account.username === 'dave') {
+  if (req.session.account && req.session.account.isAdmin) {
     let process = child_process.spawnSync('sqlite3', [model.path], {
       input: req.body.query,
       stdio: 'pipe'
     })
     let data = String(process.stdout)
-    console.log(data)
     res.render('sql', {
       account: req.session.account,
       data: data
@@ -119,15 +113,15 @@ if (model.firstRun) {
   model.db.run(
     'CREATE TABLE account (' +
       ' username TEXT NOT NULL PRIMARY KEY,' +
-      ' hash TEXT NOT NULL,' +
+      ' passwd TEXT NOT NULL,' +
       ' isadmin INTEGER NOT NULL DEFAULT 0)',
     function (err) {
       if (err) throw err
 
-      auth.createAccount('mark', 'ijefkdf', false)
-      auth.createAccount('dave', 'hunter2', false)
-      auth.createAccount('admin', 'hdke', true)
-      auth.createAccount('marvin', 'ksjdfklsdjfkljfksad', false)
+      auth.createAccount('mark', 'dirtydeedsdonedirtcheap', false)
+      auth.createAccount('dave', 'hunter2', true)
+      auth.createAccount('admin', 'kingcrimson', true)
+      auth.createAccount('marvin', 'killerqueen', false)
     })
 
   model.db.run(

@@ -1,0 +1,2 @@
+UPDATE score SET score = 10 WHERE team = 'Red' AND team = 'Green';
+UPDATE score SET score = 90 WHERE team = 'Blue';

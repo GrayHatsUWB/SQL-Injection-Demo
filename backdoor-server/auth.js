@@ -9,31 +9,23 @@ function createAccount(username, plaintextPass, isAdmin, callback) {
       return
     }
 
-    let stmt = db.prepare("INSERT INTO account (username, hash, isadmin) VALUES (?,?,?)")
-    stmt.run(username, hash, isAdmin)
+    let stmt = db.prepare("INSERT INTO account (username, passwd, isadmin) VALUES (?,?,?)")
+    stmt.run(username, plaintextPass, isAdmin)
     if (callback) callback(null)
   })
 }
 
 function checkPassword(username, plaintextGuess, callback) {
-  let stmt = db.prepare("SELECT hash FROM account WHERE username=?")
+  let stmt = db.prepare("SELECT passwd FROM account WHERE username=?")
   stmt.get(username, function (err, row) {
     if (err) {
       callback(err)
-      return
     } else if (row === undefined) {
       // Username not found
       callback(null, false)
-      return
+    } else {
+      callback(null, plaintextGuess === row.passwd)
     }
-
-    bcrypt.compare(plaintextGuess, row.hash, function (err, res) {
-      if (err) {
-        callback(err)
-      } else {
-        callback(null, res)
-      }
-    })
   })
 }
 
