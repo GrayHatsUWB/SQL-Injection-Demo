@@ -39,7 +39,7 @@ def main():
     sleep(1)
 
     # Users we're gonna pretend to crack
-    weak_users = ['dave', 'fiscal', 'gler', 'bendit', 'bender', 'ter', 'gele', 'jocoy', 'sales']
+    weak_users = ['dave', 'marvin']
 
     users = []
     with open('users.txt') as fusers:
