@@ -18,33 +18,49 @@ def guess_account(username, answer=None):
 
     if answer != None:
         Guesses.successful += 1
-        sleep(0.01)
+        sleep(0.02)
         print(colored("OK", 'green') + ": '" + answer + "' → /")
         print(f"{username} {redirect} {answer}", file=Guesses.log)
     else:
-        sleep(0.02)
+        sleep(0.04)
         print(colored("FAIL", 'red') + " → /login")
 
-# Users we're gonna pretend to crack
-weak_users = ['dave', 'fiscal', 'gler', 'bendit', 'bender', 'ter', 'gele', 'jocoy', 'sales']
+def main():
+    from sys import argv
+    if len(argv) != 4:
+        print(f"Usage: {argv[0]} [url] [userfield] [passfield]")
+        return
 
-users = []
-with open('users.txt') as fusers:
-    for user in fusers:
-        users.append(user.strip())
+    url = argv[1]
+    userfield = argv[2]
+    passfield = argv[3]
 
-passwds = []
-with open('passwds.txt') as fpasswds:
-    for passwd in fpasswds:
-        passwds.append(passwd.strip())
+    print(f"Guessing accounts on {url}\n")
+    sleep(1)
 
-for (user, passwd) in zip(users, passwds):
-    if user in weak_users:
-        guess_account(user, passwd)
-    else:
-        guess_account(user)
+    # Users we're gonna pretend to crack
+    weak_users = ['dave', 'fiscal', 'gler', 'bendit', 'bender', 'ter', 'gele', 'jocoy', 'sales']
 
-# print statistics
-print(f"{Guesses.total} guessed; {Guesses.successful} passed")
-print("All cracked accounts recorded in cracked.txt")
-Guesses.log.close()
+    users = []
+    with open('users.txt') as fusers:
+        for user in fusers:
+            users.append(user.strip())
+
+    passwds = []
+    with open('passwds.txt') as fpasswds:
+        for passwd in fpasswds:
+            passwds.append(passwd.strip())
+
+    for (user, passwd) in zip(users, passwds):
+        if user in weak_users:
+            guess_account(user, passwd)
+        else:
+            guess_account(user)
+
+    # print statistics
+    print(f"\n{Guesses.total} guessed; {Guesses.successful} passed")
+    print("All cracked accounts recorded in cracked.txt")
+    Guesses.log.close()
+
+if __name__ == '__main__':
+    main()

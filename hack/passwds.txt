@@ -62,7 +62,6 @@ dallas
 yankees
 123123
 ashley
-666666
 hello
 amanda
 orange
